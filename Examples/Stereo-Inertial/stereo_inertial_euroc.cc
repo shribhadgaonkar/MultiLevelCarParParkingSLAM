@@ -219,11 +219,12 @@ int main(int argc, char **argv)
 
 
     }
-    // Stop all threads
+    // Stop all threads. If System.SaveAtlasToFile is set in the settings file,
+    // Shutdown() saves the Atlas after stopping background map updates.
     SLAM.Shutdown();
 
-
     // Save camera trajectory
+    cout << "Saving Trajectory files..." << endl;
     if (bFileName)
     {
         const string kf_file =  "kf_" + string(argv[argc-1]) + ".txt";
@@ -236,7 +237,6 @@ int main(int argc, char **argv)
         SLAM.SaveTrajectoryEuRoC("CameraTrajectory.txt");
         SLAM.SaveKeyFrameTrajectoryEuRoC("KeyFrameTrajectory.txt");
     }
-
     return 0;
 }
 

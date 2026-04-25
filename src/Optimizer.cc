@@ -616,10 +616,10 @@ void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const l
         {
             KeyFrame* pKFi = mit->first;
 
-            if(pKFi->mnId>maxKFid)
+            if(!pKFi || pKFi->mnId>maxKFid)
                 continue;
 
-            if(!pKFi->isBad())
+            if(!pKFi->isBad() && pKFi->GetMap() == pMap)
             {
                 const int leftIndex = get<0>(mit->second);
                 cv::KeyPoint kpUn;
@@ -633,6 +633,8 @@ void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const l
                     EdgeMono* e = new EdgeMono(0);
 
                     g2o::OptimizableGraph::Vertex* VP = dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId));
+                    if(!VP)
+                        continue;
                     if(bAllFixed)
                         if(!VP->fixed())
                             bAllFixed=false;
@@ -660,6 +662,8 @@ void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const l
                     EdgeStereo* e = new EdgeStereo(0);
 
                     g2o::OptimizableGraph::Vertex* VP = dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId));
+                    if(!VP)
+                        continue;
                     if(bAllFixed)
                         if(!VP->fixed())
                             bAllFixed=false;
@@ -691,6 +695,8 @@ void Optimizer::FullInertialBA(Map *pMap, int its, const bool bFixLocal, const l
                         EdgeMono *e = new EdgeMono(1);
 
                         g2o::OptimizableGraph::Vertex* VP = dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(pKFi->mnId));
+                        if(!VP)
+                            continue;
                         if(bAllFixed)
                             if(!VP->fixed())
                                 bAllFixed=false;

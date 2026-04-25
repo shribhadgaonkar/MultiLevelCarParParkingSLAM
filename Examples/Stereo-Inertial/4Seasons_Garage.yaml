@@ -1,0 +1,97 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters
+#--------------------------------------------------------------------------------------------
+File.version: "1.0"
+
+System.SaveAtlasToFile: "parking_garage_global"
+
+# The 4Seasons images in this dataset folder are already undistorted. We keep
+# the stereo-inertial example on the PinHole path because this ORB-SLAM3 build
+# dereferences Camera2 settings when printing stereo-inertial Rectified configs.
+Camera.type: "PinHole"
+
+# Official 4Seasons undistorted camera calibration.
+Camera1.fx: 501.4757919305817
+Camera1.fy: 501.4757919305817
+Camera1.cx: 421.7953735163109
+Camera1.cy: 167.65799492501083
+
+Camera2.fx: 501.4757919305817
+Camera2.fy: 501.4757919305817
+Camera2.cx: 421.7953735163109
+Camera2.cy: 167.65799492501083
+
+# Official 4Seasons undistorted stereo transform.
+Stereo.T_c1_c2: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: f
+  data: [1.0, 0.0, 0.0, -0.3004961618953472,
+         0.0, 1.0, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0,
+         0.0, 0.0, 0.0, 1.0]
+
+# Camera resolution
+Camera.width: 800
+Camera.height: 400
+
+# Camera frames per second
+Camera.fps: 30
+
+# Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+Camera.RGB: 1
+
+# Close/Far threshold. Baseline times.
+Stereo.ThDepth: 40.0
+
+# Transformation from IMU/body frame to left camera from the official 4Seasons camchain.yaml.
+IMU.T_b_c1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: f
+   data: [-0.9998852242642406, -0.013522961078544133, 0.006831385051241187, 0.17541216744862287,
+          -0.006890161859766396, 0.004304637029338462, -0.9999669973402087, 0.0036894333751345677,
+          0.01349310815180704, -0.9998992947410829, -0.004397318352110671, -0.05810612695941222,
+          0.0, 0.0, 0.0, 1.0]
+
+# IMU noise. Frequency is from the 4Seasons sensor description; noise values are conservative
+# ADIS16465-based starting values for ORB-SLAM3 and may be tuned after validation.
+IMU.NoiseGyro: 5.236e-05
+IMU.NoiseAcc: 2.2555e-04
+IMU.GyroWalk: 1.9393e-05
+IMU.AccWalk: 8.6e-04
+IMU.Frequency: 2000.0
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+
+# ORB Extractor: Number of features per image
+ORBextractor.nFeatures: 3000
+
+# ORB Extractor: Scale factor between levels in the scale pyramid
+ORBextractor.scaleFactor: 1.2
+
+# ORB Extractor: Number of levels in the scale pyramid
+ORBextractor.nLevels: 8
+
+# ORB Extractor: Fast threshold
+ORBextractor.iniThFAST: 20
+ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1.0
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2.0
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -3.5
+Viewer.ViewpointF: 500.0
+Viewer.imageViewScale: 1.0
