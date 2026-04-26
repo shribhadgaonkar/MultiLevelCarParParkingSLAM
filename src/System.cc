@@ -1408,6 +1408,7 @@ void System::SaveAtlas(int type){
         string pathSaveFileName = "./";
         pathSaveFileName = pathSaveFileName.append(mStrSaveAtlasToFile);
         pathSaveFileName = pathSaveFileName.append(".osa");
+        const string pathTempSaveFileName = pathSaveFileName + ".tmp";
 
         string strVocabularyChecksum = CalculateCheckSum(mStrVocabularyFilePath,TEXT_FILE);
         std::size_t found = mStrVocabularyFilePath.find_last_of("/\\");
@@ -1416,24 +1417,32 @@ void System::SaveAtlas(int type){
         if(type == TEXT_FILE) // File text
         {
             cout << "Starting to write the save text file " << endl;
-            std::remove(pathSaveFileName.c_str());
-            std::ofstream ofs(pathSaveFileName, std::ios::binary);
-            boost::archive::text_oarchive oa(ofs);
+            std::remove(pathTempSaveFileName.c_str());
+            {
+                std::ofstream ofs(pathTempSaveFileName, std::ios::binary);
+                boost::archive::text_oarchive oa(ofs);
 
-            oa << strVocabularyName;
-            oa << strVocabularyChecksum;
-            oa << mpAtlas;
+                oa << strVocabularyName;
+                oa << strVocabularyChecksum;
+                oa << mpAtlas;
+            }
+            std::remove(pathSaveFileName.c_str());
+            std::rename(pathTempSaveFileName.c_str(), pathSaveFileName.c_str());
             cout << "End to write the save text file" << endl;
         }
         else if(type == BINARY_FILE) // File binary
         {
             cout << "Starting to write the save binary file" << endl;
+            std::remove(pathTempSaveFileName.c_str());
+            {
+                std::ofstream ofs(pathTempSaveFileName, std::ios::binary);
+                boost::archive::binary_oarchive oa(ofs);
+                oa << strVocabularyName;
+                oa << strVocabularyChecksum;
+                oa << mpAtlas;
+            }
             std::remove(pathSaveFileName.c_str());
-            std::ofstream ofs(pathSaveFileName, std::ios::binary);
-            boost::archive::binary_oarchive oa(ofs);
-            oa << strVocabularyName;
-            oa << strVocabularyChecksum;
-            oa << mpAtlas;
+            std::rename(pathTempSaveFileName.c_str(), pathSaveFileName.c_str());
             cout << "End to write save binary file" << endl;
         }
     }

@@ -373,7 +373,7 @@ void Map::PreSave(std::set<GeometricCamera*> &spCams)
         {
             if(it->first->GetMap() != this || it->first->isBad())
             {
-                pMPi->EraseObservation(it->first);
+                continue;
             }
 
         }
